@@ -1,33 +1,36 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
+import { List } from './components/List/List';
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todo, setTodo] = useState<string>('');
+  const [todoList, setTodoList] = useState<string[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTodo(e.target.value);
+  }
+
+  const HandleSubmit = () => {
+    if (todo) {
+      const newTodoList = [...todoList, todo];
+      setTodoList(newTodoList);
+      setTodo('');
+    }
+  }
 
   return (
     <>
+      <div className='container-form'>
+        <TextField id="outlined-basic" label="Todo" variant="outlined" onChange={(e) => {handleChange(e)}} />
+        <Button variant="contained" type='submit' onClick={HandleSubmit}>Ajouter</Button>
+      </div>
+
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <List todoList={todoList}/>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
